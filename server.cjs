@@ -60,6 +60,29 @@ app.get('/get-restaurant-details', async function(request,response) {
     }
 })
 
+app.delete('/delete-restaurant-details/:id',async function(request,response){
+    try{
+         const restaurant = await Restaurant.findById(request.params.id)
+         if(restaurant) {
+            await Restaurant.findByIdAndDelete(request.params.id)
+            response.status(200).json({
+                "status" : "success",
+                "message" : "deleted successfully"
+            })
+        } else { //restaurant : null
+            response.status(404).json({
+                "status" : "failure",
+                "message" : "entry not found"
+            })
+        }
+    }catch(error){
+        response.status(500).json({
+            "status" : "user not created",
+            "message" :"Internal server error",
+            "error":error
+        })
+    }
+})
 
 app.post('/create-new-user', async function(request, response) {
     try {
@@ -101,4 +124,7 @@ app.post('/create-new-user', async function(request, response) {
             "message" : "internal server error"
         })
     }
+})
+app.patch('/update-restaurant-details',function(request,response){
+
 })
